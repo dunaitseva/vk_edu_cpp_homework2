@@ -4,16 +4,16 @@ TESTING_OPT=""
 SANITIZE_OPT=""
 COVERAGE_OPT=""
 LINTER_OPT=""
-while getopts "tscl" flag;
-do
-    case "${flag}" in
-        t) TESTING_OPT="-DTEST=ON";;
-        s) SANITIZE_OPT="-DSANITIZE=ON";;
-        c) COVERAGE_OPT="-DCOVERAGE=ON";;
-        l) LINTER_OPT="-DLINTERS-CHECK=ON -DCMAKE_EXPORT_COMPILE_COMMANDS=ON";;
-        *) echo "Usage options -s SANITIZE or -t TESTING" && exit 1
-    esac
-done
+#while getopts "tscl" flag;
+#do
+#    case "${flag}" in
+#        t) TESTING_OPT="-DTEST=ON";;
+#        s) SANITIZE_OPT="-DSANITIZE=ON";;
+#        c) COVERAGE_OPT="-DCOVERAGE=ON";;
+#        l) LINTER_OPT="-DLINTERS-CHECK=ON -DCMAKE_EXPORT_COMPILE_COMMANDS=ON";;
+#        *) echo "Usage options -s SANITIZE or -t TESTING" && exit 1
+#    esac
+#done
 
 BUILD_DIR="./build"
 LOG_FILE="./tmp/build.log"
