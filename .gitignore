@@ -35,5 +35,6 @@
 .idea/*
 cmake-build-debug/*
 
-# Build files
+# Build files and other temple directories and files
 build/*
+tmp/*

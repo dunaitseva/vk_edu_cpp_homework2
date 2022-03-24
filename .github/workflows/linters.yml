@@ -1,0 +1,13 @@
+name: Linters
+on: [ push ]
+defaults:
+  run:
+    shell: bash
+jobs:
+  Formating:
+    name: Check formating compilance with requirements
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Run format check script
+        run: ./scripts/format-check.sh

@@ -1,8 +1,8 @@
 #ifndef PROJECT_INCLUDE_MATRIX_H_
 #define PROJECT_INCLUDE_MATRIX_H_
 
-#include <stdio.h>
 #include <stddef.h>
+#include <stdio.h>
 
 typedef struct {
   size_t rows;
@@ -12,9 +12,9 @@ typedef struct {
 } matrix_t;
 
 enum supported_matrix_errors {
-  ESIZE,   // Error in matrix size
-  ESTREAM, // Error with matrix reading/writing stream
-  EALLOC,  // Error in allocating memory for matrix
+  ESIZE,    // Error in matrix size
+  ESTREAM,  // Error with matrix reading/writing stream
+  EALLOC,   // Error in allocating memory for matrix
 };
 
 int matrix_set_val(double val, size_t col, size_t row);
@@ -27,4 +27,4 @@ matrix_t *write_matrix(FILE *output, matrix_t *matrix);
 void delete_matrix(matrix_t *matrix);
 void transpose(matrix_t *matrix);
 
-#endif // PROJECT_INCLUDE_MATRIX_H_
+#endif  // PROJECT_INCLUDE_MATRIX_H_
