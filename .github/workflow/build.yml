@@ -1,0 +1,16 @@
+name: Build pipline
+on: [ push ]
+defaults:
+  run:
+    shell: bash
+jobs:
+  Building:
+    name: Build HW solution
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Building
+        run: |
+          cmake -S . -B build
+          cd build
+          make
