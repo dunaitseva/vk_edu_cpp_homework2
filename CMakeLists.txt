@@ -8,7 +8,16 @@ set(MATRIX_LIB_NAME matrix)
 set(INCLUDE project)
 set(SOURCE project/src)
 
-add_library(${MATRIX_LIB_NAME} STATIC ${SOURCE}/matrix.c)
+option(PARALLEL "Enable parallel implementation build" OFF)
+if (PARALLEL)
+    message(STATUS "Enabled parallel library implementation build")
+    set(LIBRARY_TYPE SHARED)
+else ()
+    message(STATUS "Enabled consistent library implementation build (by default)")
+    set(LIBRARY_TYPE STATIC)
+endif ()
+
+add_library(${MATRIX_LIB_NAME} ${LIBRARY_TYPE} ${SOURCE}/matrix.c)
 target_include_directories(${MATRIX_LIB_NAME} PUBLIC ${INCLUDE})
 
 option(TEST "Enable tests build" OFF)
