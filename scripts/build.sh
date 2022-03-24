@@ -5,7 +5,7 @@ ERROR_TTY_COLOR=$(tput setaf 1)
 TTY_COLOR_RESET=$(tput sgr0)
 
 BINARY_DIR="build"
-CMAKE_OPTIONS=""
+CMAKE_OPTIONS="-DCMAKE_EXPORT_COMPILE_COMMANDS=ON"
 while getopts "tp" opt; do
   case $opt in
   t)

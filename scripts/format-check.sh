@@ -17,7 +17,6 @@ for dir in ${DIRS[*]}; do
     diff $file $TMP_FILE >/dev/null
     if [ $? -ne 0 ]; then
       echo "${ERROR_TTY_COLOR}Error if file $file format (codestyle: Google)${TTY_COLOR_RESET}"
-      exit 1
     fi
 
   done

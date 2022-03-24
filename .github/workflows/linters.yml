@@ -11,3 +11,15 @@ jobs:
       - uses: actions/checkout@v2
       - name: Run format check script
         run: ./scripts/format-check.sh
+
+  Linters:
+    name: Check formating compilance with requirements
+    runs-on: ubuntu-latest
+    needs: Formating
+    steps:
+      - uses: actions/checkout@v2
+      - name: Run format check script
+        run: |
+          sudo apt install cppcheck
+          pip install cpplint
+          ./scripts/linters-check.sh
