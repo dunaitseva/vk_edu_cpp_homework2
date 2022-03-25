@@ -1,0 +1,16 @@
+name: Testing piplene
+on: [ push ]
+defaults:
+  run:
+    shell: bash
+jobs:
+  Consistent:
+    name: Build and run tests with consistent library
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Run format check script
+        run: |
+          ./scripts/build.sh -t
+          cd build
+          ctest

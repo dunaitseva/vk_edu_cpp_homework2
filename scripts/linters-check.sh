@@ -18,7 +18,7 @@ check-ret-code() {
   fi
 }
 
-CPPCHECK_CHECKS="warning,style,performance,portability,unusedFunction"
+CPPCHECK_CHECKS="warning,style,performance,portability"
 
 INFO_TTY_COLOR=$(tput setaf 2)
 ERROR_TTY_COLOR=$(tput setaf 1)
@@ -28,7 +28,7 @@ for dir in ${DIRS[*]}; do
   for file in $(find -P $dir -type f); do
     echo "${INFO_TTY_COLOR}PROCESSING $file${TTY_COLOR_RESET}"
 
-    cpplint --filter=-legal/copyright $file
+    cpplint --filter=-legal/copyright,-readability/casting $file
     check-ret-code $file "cpplint" ret_code
     cppcheck --enable=$CPPCHECK_CHECKS --error-exitcode=1 -I project/include --suppress=missingIncludeSystem $file
     check-ret-code $file "cppcheck" ret_code
