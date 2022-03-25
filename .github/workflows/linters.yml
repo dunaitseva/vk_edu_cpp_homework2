@@ -13,7 +13,7 @@ jobs:
         run: ./scripts/format-check.sh
 
   Linters:
-    name: Check formating compilance with requirements
+    name: Linters check code requrements
     runs-on: ubuntu-latest
     needs: Formating
     steps:
