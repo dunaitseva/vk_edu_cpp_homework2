@@ -13,4 +13,5 @@ jobs:
         run: |
           ./scripts/build.sh -t
           cd build
+          make
           ctest
