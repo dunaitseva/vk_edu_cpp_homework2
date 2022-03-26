@@ -6,9 +6,9 @@
 
 #define DEFAULT_DOUBLE_RET_VAL 0.0
 
-#define INPUT_DOUBLE_SIZE 21
+#define INPUT_DOUBLE_SIZE 81
 #define INPUT_DOUBLE_PARAMETERS_AMOUNT 1
-#define FORMAT_DOUBLE_INPUT "%20[.0-9e-]%*[ \n\t]"
+#define FORMAT_DOUBLE_INPUT "%80[.0-9e-]%*[ \n\t]"
 
 #define INPUT_SIZE_SIZE 11
 #define INPUT_SIZE_PARAMETERS_AMOUNT 2
@@ -32,6 +32,7 @@ enum supported_matrix_errors {
   ESTREAM,  // Error with matrix reading/writing stream
   EREAD,    // WRONG INPUT
   EALLOC,   // Error in allocating memory for matrix
+  ETHREAD,  // Error in thread occur
 };
 
 int matrix_set_val(matrix_t *matrix, double val, size_t row, size_t col);
@@ -43,6 +44,6 @@ int delete_matrix(matrix_t *matrix);
 matrix_t *read_matrix(FILE *input, int *status);
 int write_matrix(FILE *output, matrix_t *matrix);
 
-int transpose(matrix_t *matrix);
+matrix_t *transpose(matrix_t *matrix, int *status);
 
 #endif  // PROJECT_INCLUDE_MATRIX_H_

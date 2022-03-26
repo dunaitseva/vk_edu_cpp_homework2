@@ -1,35 +1,31 @@
 #include "include/matrix.h"
 
-#include <inttypes.h>
-#include <stdlib.h>
+static void set_status(int *status, int status_code);
 
-int transpose(matrix_t *matrix) {
+matrix_t *transpose(matrix_t *matrix, int *status) {
   if (matrix == NULL) {
-	return EPTR;
+	set_status(status, EPTR);
+	return NULL;
   }
 
-  int_fast8_t *processed = (int_fast8_t*)calloc(matrix->rows * matrix->cols, sizeof(int_fast8_t));
-  if (processed == NULL) {
-	return EALLOC;
+  matrix_t *transposed = create_matrix(matrix->cols, matrix->rows, NULL);
+  if (transposed == NULL) {
+	set_status(status, EALLOC);
+	return NULL;
   }
 
   for (size_t i = 0; i < matrix->rows; ++i) {
 	for (size_t j = 0; j < matrix->cols; ++j) {
-	  if (!(processed[i * matrix->cols + j])) {
-		double tmp = matrix->data[i * matrix->cols + j];
-		matrix->data[i * matrix->cols + j] = matrix->data[j * matrix->rows + i];
-		matrix->data[j * matrix->rows + i] = tmp;
-		processed[i * matrix->cols + j] = TRUE;
-		processed[j * matrix->rows + i] = TRUE;
-	  }
+	  matrix_set_val(transposed, matrix_get_val(matrix, i, j, NULL), j, i);
 	}
   }
 
-  size_t tmp = matrix->rows;
-  matrix->rows = matrix->cols;
-  matrix->cols = tmp;
-
-  free(processed);
-  return OK;
+  set_status(status, OK);
+  return transposed;
 }
 
+static void set_status(int *status, int status_code) {
+  if (status != NULL) {
+	*status = status_code;
+  }
+}

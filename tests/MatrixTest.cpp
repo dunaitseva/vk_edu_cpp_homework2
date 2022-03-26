@@ -74,11 +74,11 @@ class MatrixTranspose : public ::testing::Test {
   static constexpr size_t MATRIX_MAX_BUFFER = 512;
   char valid_input[MATRIX_MAX_BUFFER] = "2 3\n"
 										"0.1 -4.3 22.1\n"
-										"1.2e-9 -4.3 2.1\n";
+										"1.2e-9 12.3 2.1\n";
   char output_write_buffer[MATRIX_MAX_BUFFER];
   char output_write_buffer_expected[MATRIX_MAX_BUFFER] = "3 2\n"
 														 "0.100000 0.000000\n"
-														 "-4.300000 -4.300000\n"
+														 "-4.300000 12.300000\n"
 														 "22.100000 2.100000\n";
   FILE *valid_input_stream;
   FILE *output_write_stream;
@@ -227,10 +227,21 @@ TEST_F(MatrixReadWrite, WriteInalidArguments) {
 TEST_F(MatrixTranspose, TransposeOperation) {
   matrix_t *matrix = read_matrix(valid_input_stream, nullptr);
   ASSERT_NE(matrix, nullptr);
-  transpose(matrix);
-  int status = write_matrix(output_write_stream, matrix);
+  matrix_t *transposed = transpose(matrix, nullptr);
+  ASSERT_NE(transposed, nullptr);
+
+  int status = write_matrix(output_write_stream, transposed);
   EXPECT_EQ(status, OK);
+
   fflush(output_write_stream);
-  ASSERT_STREQ(output_write_buffer, output_write_buffer_expected);
   delete_matrix(matrix);
+  delete_matrix(transposed);
+  ASSERT_STREQ(output_write_buffer, output_write_buffer_expected);
+}
+
+TEST_F(MatrixTranspose, InvalidArguments) {
+  int status;
+  matrix_t *result = transpose(nullptr, &status);
+  EXPECT_EQ(result, nullptr);
+  ASSERT_EQ(status, EPTR);
 }

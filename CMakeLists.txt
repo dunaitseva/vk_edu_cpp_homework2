@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.16)
 project(HW2)
 
 set(CMAKE_C_STANDARD 99)
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -Wpedantic -Werror")
+#set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -Wpedantic -Werror")
 
 set(MATRIX_LIB_NAME matrix)
 set(INCLUDE project)
@@ -21,9 +21,15 @@ endif ()
 
 add_library(${MATRIX_LIB_NAME} ${LIBRARY_TYPE} ${SOURCE}/matrix.c ${SOURCE}/${OPERATIONS_SOURCES}/matrix_operations.c)
 target_include_directories(${MATRIX_LIB_NAME} PUBLIC ${INCLUDE})
+if (PARALLEL)
+    target_link_libraries(${MATRIX_LIB_NAME} pthread)
+endif ()
 
 add_executable(transpose project/main.c)
 target_link_libraries(transpose ${MATRIX_LIB_NAME})
+if (PARALLEL)
+    target_link_libraries(transpose pthread)
+endif ()
 
 option(TEST "Enable tests build" OFF)
 if (TEST)
