@@ -5,7 +5,7 @@ defaults:
     shell: bash
 jobs:
   Consistent:
-    name: Build and run tests with consistent library implementation
+    name: Consistent library tests
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -18,14 +18,14 @@ jobs:
           make
       - name: Run matrix tests set
         run: |
-          ls -la
+          ls -la build
           valgrind --leak-check=full ./MatrixTest
           ./MatrixTestAddress
           ./MatrixTestThread
           ./MatrixTestUndefined
 
   Parallel:
-    name: Build and run tests with parallel library implementation
+    name: Parallel library tests
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
