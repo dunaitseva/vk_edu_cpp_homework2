@@ -22,4 +22,5 @@ jobs:
         run: |
           sudo apt install cppcheck
           pip install cpplint
+          sudo apt install -y clang-tidy
           ./scripts/linters-check.sh
