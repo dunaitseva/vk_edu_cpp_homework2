@@ -18,6 +18,7 @@ jobs:
           make
       - name: Run matrix tests set
         run: |
+          ls -la
           valgrind --leak-check=full ./MatrixTest
           ./MatrixTestAddress
           ./MatrixTestThread
