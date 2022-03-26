@@ -1,9 +1,9 @@
 #include "include/matrix.h"
+#include "include/utils.h"
 
 #include <stdlib.h>
 #include <string.h>
 
-static void set_status(int *status, int status_code);
 static int read_size(FILE *input, size_t *rows, size_t *cols);
 static int read_float(FILE *input, double *val);
 
@@ -124,12 +124,6 @@ int write_matrix(FILE *output, matrix_t *matrix) {
 	fprintf(output, "\n");
   }
   return OK;
-}
-
-static void set_status(int *status, int status_code) {
-  if (status != NULL) {
-	*status = status_code;
-  }
 }
 
 static int read_size(FILE *input, size_t *rows, size_t *cols) {

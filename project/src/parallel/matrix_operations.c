@@ -1,4 +1,5 @@
 #include "include/matrix.h"
+#include "include/utils.h"
 
 #include <pthread.h>
 #include <sys/sysinfo.h>
@@ -12,7 +13,6 @@ typedef struct {
   size_t end;
 } transpose_routine_args_t;
 
-static void set_status(int *status, int status_code);
 static size_t determine_threads_amount();
 static void *transpose_routine(void *args_struct);
 static int prepare_resources(pthread_t **threads, transpose_routine_args_t **args, size_t threads_amount);
@@ -72,12 +72,6 @@ static void *transpose_routine(void *args_struct) {
   }
 
   return args_struct;
-}
-
-static void set_status(int *status, int status_code) {
-  if (status != NULL) {
-	*status = status_code;
-  }
 }
 
 static size_t determine_threads_amount() {

@@ -1,6 +1,5 @@
 #include "include/matrix.h"
-
-static void set_status(int *status, int status_code);
+#include "include/utils.h"
 
 matrix_t *transpose(matrix_t *matrix, int *status) {
   if (matrix == NULL) {
@@ -22,10 +21,4 @@ matrix_t *transpose(matrix_t *matrix, int *status) {
 
   set_status(status, OK);
   return transposed;
-}
-
-static void set_status(int *status, int status_code) {
-  if (status != NULL) {
-	*status = status_code;
-  }
 }

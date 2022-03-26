@@ -13,7 +13,7 @@ jobs:
         run: |
           sudo apt update
           sudo apt install valgrind
-          ./scripts/build.sh -tp
+          ./scripts/build.sh -t
           cd build
           make
       - name: Run matrix tests set
@@ -41,3 +41,11 @@ jobs:
           ./build/MatrixTestAddress
           ./build/MatrixTestThread
           ./build/MatrixTestUndefined
+      - name: Generate coverage report
+        run: |
+          ./scripts/coverage-generator.sh
+      - name: Getting code coverage data
+        uses: codecov/codecov-action@v2
+        with:
+          token: 6159713c-1d25-4419-9556-de04e1663b81
+          files: coverage.xml
