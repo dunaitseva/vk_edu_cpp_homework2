@@ -1,19 +1,20 @@
 #include "include/matrix.h"
-#include "include/utils.h"
 
 #include <stdlib.h>
 #include <string.h>
+
+#include "include/utils.h"
 
 static int read_size(FILE *input, size_t *rows, size_t *cols);
 static int read_float(FILE *input, double *val);
 
 int matrix_set_val(matrix_t *matrix, double val, size_t row, size_t col) {
   if (matrix == NULL) {
-	return EPTR;
+    return EPTR;
   }
 
   if (row >= matrix->rows || col >= matrix->cols) {
-	return ESIZE;
+    return ESIZE;
   }
 
   matrix->data[row * matrix->cols + col] = val;
@@ -22,13 +23,13 @@ int matrix_set_val(matrix_t *matrix, double val, size_t row, size_t col) {
 
 double matrix_get_val(matrix_t *matrix, size_t row, size_t col, int *status) {
   if (matrix == NULL) {
-	set_status(status, EPTR);
-	return DEFAULT_DOUBLE_RET_VAL;
+    set_status(status, EPTR);
+    return DEFAULT_DOUBLE_RET_VAL;
   }
 
   if (row >= matrix->rows || col >= matrix->cols) {
-	set_status(status, ESIZE);
-	return DEFAULT_DOUBLE_RET_VAL;
+    set_status(status, ESIZE);
+    return DEFAULT_DOUBLE_RET_VAL;
   }
 
   set_status(status, OK);
@@ -38,15 +39,15 @@ double matrix_get_val(matrix_t *matrix, size_t row, size_t col, int *status) {
 matrix_t *create_matrix(size_t rows, size_t cols, int *status) {
   matrix_t *target = (matrix_t *)malloc(sizeof(matrix_t));
   if (target == NULL) {
-	set_status(status, EALLOC);
-	return NULL;
+    set_status(status, EALLOC);
+    return NULL;
   }
 
   target->data = (double *)calloc(cols * rows, sizeof(double));
   if (target->data == NULL) {
-	set_status(status, EALLOC);
-	free(target);
-	return NULL;
+    set_status(status, EALLOC);
+    free(target);
+    return NULL;
   }
 
   memset(target->data, 0, sizeof(double) * rows * cols);
@@ -63,7 +64,7 @@ int delete_matrix(matrix_t *matrix) {
   // situation, when matrix == NULL and code will try
   // to refer on matrix data.
   if (matrix == NULL) {
-	return EPTR;
+    return EPTR;
   }
 
   free(matrix->data);
@@ -73,32 +74,32 @@ int delete_matrix(matrix_t *matrix) {
 
 matrix_t *read_matrix(FILE *input, int *status) {
   if (input == NULL) {
-	set_status(status, ESTREAM);
-	return NULL;
+    set_status(status, ESTREAM);
+    return NULL;
   }
 
   size_t rows;
   size_t cols;
   if (!read_size(input, &rows, &cols)) {
-	set_status(status, EREAD);
-	return NULL;
+    set_status(status, EREAD);
+    return NULL;
   }
 
   matrix_t *result_matrix = create_matrix(rows, cols, status);
   if (result_matrix == NULL) {
-	return NULL;
+    return NULL;
   }
 
   for (size_t i = 0; i < result_matrix->rows; ++i) {
-	for (size_t j = 0; j < result_matrix->cols; ++j) {
-	  double tmp;
-	  if (!read_float(input, &tmp)) {
-		delete_matrix(result_matrix);
-		set_status(status, EREAD);
-		return NULL;
-	  }
-	  matrix_set_val(result_matrix, tmp, i, j);
-	}
+    for (size_t j = 0; j < result_matrix->cols; ++j) {
+      double tmp;
+      if (!read_float(input, &tmp)) {
+        delete_matrix(result_matrix);
+        set_status(status, EREAD);
+        return NULL;
+      }
+      matrix_set_val(result_matrix, tmp, i, j);
+    }
   }
 
   set_status(status, OK);
@@ -107,21 +108,23 @@ matrix_t *read_matrix(FILE *input, int *status) {
 
 int write_matrix(FILE *output, matrix_t *matrix) {
   if (output == NULL) {
-	return ESTREAM;
+    return ESTREAM;
   }
 
   if (matrix == NULL) {
-	return EPTR;
+    return EPTR;
   }
 
   fprintf(output, "%zu %zu\n", matrix->rows, matrix->cols);
   for (size_t i = 0; i < matrix->rows; ++i) {
-	for (size_t j = 0; j < matrix->cols; ++j) {
-	  double tmp = matrix_get_val(matrix, i, j, NULL);
-	  fprintf(output, "%lf", tmp);
-	  if (j != matrix->cols - 1) { fprintf(output, " "); }
-	}
-	fprintf(output, "\n");
+    for (size_t j = 0; j < matrix->cols; ++j) {
+      double tmp = matrix_get_val(matrix, i, j, NULL);
+      fprintf(output, "%lf", tmp);
+      if (j != matrix->cols - 1) {
+        fprintf(output, " ");
+      }
+    }
+    fprintf(output, "\n");
   }
   return OK;
 }
@@ -138,7 +141,7 @@ static int read_size(FILE *input, size_t *rows, size_t *cols) {
 
   int read = fscanf(input, FORMAT_SIZE_INPUT, rows_str_repr, cols_str_repr);
   if (read < INPUT_SIZE_PARAMETERS_AMOUNT) {
-	return 0;
+    return 0;
   }
 
   /* This part means that string performing to float point digit was failed
@@ -151,7 +154,7 @@ static int read_size(FILE *input, size_t *rows, size_t *cols) {
   *rows = strtoul(rows_str_repr, &tmp_rows_str_repr, SIZE_INPUT_BASE);
   *cols = strtoul(cols_str_repr, &tmp_cols_str_repr, SIZE_INPUT_BASE);
   if (*tmp_rows_str_repr || *tmp_cols_str_repr) {
-	return 0;
+    return 0;
   }
 
   return 1;
@@ -163,13 +166,13 @@ static int read_float(FILE *input, double *val) {
 
   int read = fscanf(input, FORMAT_DOUBLE_INPUT, float_str_repr);
   if (read < INPUT_DOUBLE_PARAMETERS_AMOUNT) {
-	return 0;
+    return 0;
   }
 
   char *tmp_float_str_repr = float_str_repr;
   *val = strtod(float_str_repr, &tmp_float_str_repr);
   if (*tmp_float_str_repr) {
-	return 0;
+    return 0;
   }
 
   return 1;

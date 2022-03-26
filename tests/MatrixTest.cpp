@@ -1,13 +1,12 @@
 #include <cstdio>
-
-#include <stdexcept>
 #include <exception>
+#include <stdexcept>
 
 extern "C" {
 #include "include/matrix.h"
 }
 
-#include <gtest/gtest.h>
+#include "gtest/gtest.h"
 
 class MatrixSetGet : public ::testing::Test {
  protected:
@@ -17,31 +16,30 @@ class MatrixSetGet : public ::testing::Test {
   matrix_t *matrix1;
 
   void SetUp() {
-	matrix1 = create_matrix(MATRIX_ROWS, MATRIX_COLS, nullptr);
+    matrix1 = create_matrix(MATRIX_ROWS, MATRIX_COLS, nullptr);
 
-	if (matrix1 == nullptr) {
-	  throw std::runtime_error("One of pointers is null");
-	}
+    if (matrix1 == nullptr) {
+      throw std::runtime_error("One of pointers is null");
+    }
   }
 
-  void TearDown() {
-	delete_matrix(matrix1);
-  }
-
+  void TearDown() { delete_matrix(matrix1); }
 };
 
 class MatrixReadWrite : public ::testing::Test {
  protected:
   static constexpr size_t MATRIX_MAX_BUFFER = 4096;
-  char valid_input[MATRIX_MAX_BUFFER] = "2 3\n"
-										"0.1 -4.3 22.1\n"
-										"1.2e-9 -4.3 2.1\n";
+  char valid_input[MATRIX_MAX_BUFFER] =
+      "2 3\n"
+      "0.1 -4.3 22.1\n"
+      "1.2e-9 -4.3 2.1\n";
   char invalid_input_size[MATRIX_MAX_BUFFER] = "2a 1\n1.2\n3.2\n";
   char invalid_input_value[MATRIX_MAX_BUFFER] = "2 1\n1.2asd\n3.2\n";
   char output_write_buffer[MATRIX_MAX_BUFFER];
-  char output_write_buffer_expected[MATRIX_MAX_BUFFER] = "2 3\n"
-														 "0.100000 -4.300000 22.100000\n"
-														 "0.000000 -4.300000 2.100000\n";
+  char output_write_buffer_expected[MATRIX_MAX_BUFFER] =
+      "2 3\n"
+      "0.100000 -4.300000 22.100000\n"
+      "0.000000 -4.300000 2.100000\n";
 
   FILE *valid_input_stream;
   FILE *invalid_input_size_stream;
@@ -49,52 +47,54 @@ class MatrixReadWrite : public ::testing::Test {
   FILE *output_write_stream;
 
   void SetUp() {
-	valid_input_stream = fmemopen(valid_input, MATRIX_MAX_BUFFER, "r");
-	invalid_input_size_stream = fmemopen(invalid_input_size, MATRIX_MAX_BUFFER, "r");
-	invalid_input_value_stream = fmemopen(invalid_input_value, MATRIX_MAX_BUFFER, "r");
-	output_write_stream = fmemopen(output_write_buffer, MATRIX_MAX_BUFFER, "w");
-	if (valid_input_stream == nullptr ||
-		invalid_input_size_stream == nullptr ||
-		output_write_stream == nullptr ||
-		invalid_input_value_stream == nullptr) {
-	  throw std::runtime_error("Error opening stream");
-	}
+    valid_input_stream = fmemopen(valid_input, MATRIX_MAX_BUFFER, "r");
+    invalid_input_size_stream =
+        fmemopen(invalid_input_size, MATRIX_MAX_BUFFER, "r");
+    invalid_input_value_stream =
+        fmemopen(invalid_input_value, MATRIX_MAX_BUFFER, "r");
+    output_write_stream = fmemopen(output_write_buffer, MATRIX_MAX_BUFFER, "w");
+    if (valid_input_stream == nullptr || invalid_input_size_stream == nullptr ||
+        output_write_stream == nullptr ||
+        invalid_input_value_stream == nullptr) {
+      throw std::runtime_error("Error opening stream");
+    }
   }
 
   void TearDown() {
-	fclose(valid_input_stream);
-	fclose(invalid_input_size_stream);
-	fclose(invalid_input_value_stream);
-	fclose(output_write_stream);
+    fclose(valid_input_stream);
+    fclose(invalid_input_size_stream);
+    fclose(invalid_input_value_stream);
+    fclose(output_write_stream);
   }
 };
 
 class MatrixTranspose : public ::testing::Test {
  protected:
   static constexpr size_t MATRIX_MAX_BUFFER = 512;
-  char valid_input[MATRIX_MAX_BUFFER] = "2 3\n"
-										"0.1 -4.3 22.1\n"
-										"1.2e-9 12.3 2.1\n";
+  char valid_input[MATRIX_MAX_BUFFER] =
+      "2 3\n"
+      "0.1 -4.3 22.1\n"
+      "1.2e-9 12.3 2.1\n";
   char output_write_buffer[MATRIX_MAX_BUFFER];
-  char output_write_buffer_expected[MATRIX_MAX_BUFFER] = "3 2\n"
-														 "0.100000 0.000000\n"
-														 "-4.300000 12.300000\n"
-														 "22.100000 2.100000\n";
+  char output_write_buffer_expected[MATRIX_MAX_BUFFER] =
+      "3 2\n"
+      "0.100000 0.000000\n"
+      "-4.300000 12.300000\n"
+      "22.100000 2.100000\n";
   FILE *valid_input_stream;
   FILE *output_write_stream;
 
   void SetUp() {
-	valid_input_stream = fmemopen(valid_input, MATRIX_MAX_BUFFER, "r");
-	output_write_stream = fmemopen(output_write_buffer, MATRIX_MAX_BUFFER, "w");
-	if (valid_input_stream == nullptr ||
-		output_write_stream == nullptr) {
-	  throw std::runtime_error("Error opening stream");
-	}
+    valid_input_stream = fmemopen(valid_input, MATRIX_MAX_BUFFER, "r");
+    output_write_stream = fmemopen(output_write_buffer, MATRIX_MAX_BUFFER, "w");
+    if (valid_input_stream == nullptr || output_write_stream == nullptr) {
+      throw std::runtime_error("Error opening stream");
+    }
   }
 
   void TearDown() {
-	fclose(valid_input_stream);
-	fclose(output_write_stream);
+    fclose(valid_input_stream);
+    fclose(output_write_stream);
   }
 };
 
