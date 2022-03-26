@@ -43,7 +43,7 @@ jobs:
           ./build/MatrixTestUndefined
       - name: Generate coverage report
         run: |
-          ./scripts/coverage-generator.sh
+          ./scripts/coverage-measure.sh
       - name: Getting code coverage data
         uses: codecov/codecov-action@v2
         with:
