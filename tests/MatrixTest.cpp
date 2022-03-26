@@ -1,4 +1,4 @@
-#include <stdio.h>
+#include <cstdio>
 
 #include <stdexcept>
 #include <exception>
@@ -40,14 +40,13 @@ class MatrixReadWrite : public ::testing::Test {
   char invalid_input_value[MATRIX_MAX_BUFFER] = "2 1\n1.2asd\n3.2\n";
   char output_write_buffer[MATRIX_MAX_BUFFER];
   char output_write_buffer_expected[MATRIX_MAX_BUFFER] = "2 3\n"
-												"0.100000 -4.300000 22.100000\n"
-												"0.000000 -4.300000 2.100000\n";
+														 "0.100000 -4.300000 22.100000\n"
+														 "0.000000 -4.300000 2.100000\n";
 
   FILE *valid_input_stream;
   FILE *invalid_input_size_stream;
   FILE *invalid_input_value_stream;
   FILE *output_write_stream;
-
 
   void SetUp() {
 	valid_input_stream = fmemopen(valid_input, MATRIX_MAX_BUFFER, "r");
@@ -66,6 +65,35 @@ class MatrixReadWrite : public ::testing::Test {
 	fclose(valid_input_stream);
 	fclose(invalid_input_size_stream);
 	fclose(invalid_input_value_stream);
+	fclose(output_write_stream);
+  }
+};
+
+class MatrixTranspose : public ::testing::Test {
+ protected:
+  static constexpr size_t MATRIX_MAX_BUFFER = 512;
+  char valid_input[MATRIX_MAX_BUFFER] = "2 3\n"
+										"0.1 -4.3 22.1\n"
+										"1.2e-9 -4.3 2.1\n";
+  char output_write_buffer[MATRIX_MAX_BUFFER];
+  char output_write_buffer_expected[MATRIX_MAX_BUFFER] = "3 2\n"
+														 "0.100000 0.000000\n"
+														 "-4.300000 -4.300000\n"
+														 "22.100000 2.100000\n";
+  FILE *valid_input_stream;
+  FILE *output_write_stream;
+
+  void SetUp() {
+	valid_input_stream = fmemopen(valid_input, MATRIX_MAX_BUFFER, "r");
+	output_write_stream = fmemopen(output_write_buffer, MATRIX_MAX_BUFFER, "w");
+	if (valid_input_stream == nullptr ||
+		output_write_stream == nullptr) {
+	  throw std::runtime_error("Error opening stream");
+	}
+  }
+
+  void TearDown() {
+	fclose(valid_input_stream);
 	fclose(output_write_stream);
   }
 };
@@ -194,4 +222,15 @@ TEST_F(MatrixReadWrite, WriteInalidArguments) {
   ASSERT_EQ(status, ESTREAM);
   status = write_matrix(stdin, nullptr);
   ASSERT_EQ(status, EPTR);
+}
+
+TEST_F(MatrixTranspose, TransposeOperation) {
+  matrix_t *matrix = read_matrix(valid_input_stream, nullptr);
+  ASSERT_NE(matrix, nullptr);
+  transpose(matrix);
+  int status = write_matrix(output_write_stream, matrix);
+  EXPECT_EQ(status, OK);
+  fflush(output_write_stream);
+  ASSERT_STREQ(output_write_buffer, output_write_buffer_expected);
+  delete_matrix(matrix);
 }

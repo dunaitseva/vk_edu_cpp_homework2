@@ -15,6 +15,9 @@
 #define SIZE_INPUT_BASE 10
 #define FORMAT_SIZE_INPUT "%10[0-9]%*[ ]%10[0-9]\n"
 
+#define TRUE 1
+#define FALSE 0
+
 typedef struct {
   size_t rows;
   size_t cols;
@@ -40,6 +43,6 @@ int delete_matrix(matrix_t *matrix);
 matrix_t *read_matrix(FILE *input, int *status);
 int write_matrix(FILE *output, matrix_t *matrix);
 
-void transpose(matrix_t *matrix);
+int transpose(matrix_t *matrix);
 
 #endif  // PROJECT_INCLUDE_MATRIX_H_
