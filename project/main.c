@@ -74,7 +74,7 @@ int main(int argc, char *argv[]) {
     return -1;
   }
 
-  output = fopen(argv[INPUT_FILE], "w");
+  output = fopen(argv[OUTPUT_FILE], "w");
   if (output == NULL) {
     free_res(input, output, matrix, transposed_matrix);
     fprintf(stderr, "%s\n", OUT_OPEN_ERR_MSG);

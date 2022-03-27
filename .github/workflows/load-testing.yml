@@ -1,0 +1,31 @@
+name: Load testing
+on: [ push ]
+defaults:
+  run:
+    shell: bash
+jobs:
+  Reference-tests:
+    name: Comparison of the implementation with the reference
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Run tests set with consistent implementation
+        run: |
+          ./scripts/build.sh
+          cd build
+          make transpose
+          cd ..
+          ./scripts/load-testing.sh 10 5
+          ./scripts/load-testing.sh 100 100
+          ./scripts/load-testing.sh 1000 2000
+          ./scripts/load-testing.sh 10000 5000
+      - name: Run tests set with consistent implementation
+        run: |
+          ./scripts/build.sh -p
+          cd build
+          make transpose
+          cd ..
+          ./scripts/load-testing.sh 10 5
+          ./scripts/load-testing.sh 100 100
+          ./scripts/load-testing.sh 1000 2000
+          ./scripts/load-testing.sh 10000 5000

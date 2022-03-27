@@ -119,7 +119,7 @@ int write_matrix(FILE *output, matrix_t *matrix) {
   for (size_t i = 0; i < matrix->rows; ++i) {
     for (size_t j = 0; j < matrix->cols; ++j) {
       double tmp = matrix_get_val(matrix, i, j, NULL);
-      fprintf(output, "%lf", tmp);
+      fprintf(output, "%.6lf", tmp);
       if (j != matrix->cols - 1) {
         fprintf(output, " ");
       }
