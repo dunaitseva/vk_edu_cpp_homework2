@@ -31,3 +31,33 @@ jobs:
           ./scripts/load-testing.sh 100 100
           ./scripts/load-testing.sh 1000 2000
           ./scripts/load-testing.sh 10000 5000
+
+  Time-measuring:
+    name: Comparison time of working consistent and parallel implementations
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install numpy
+        run: pip install numpy
+      - name: Build consistent
+        run: |
+          ./scripts/build.sh
+          cd build
+          make transpose
+          cd ..
+          cp ./buid/transpose consistent
+      - name: Build parallel
+        run: |
+          ./scripts/build.sh
+          cd build
+          make transpose
+          cd ..
+          cp ./buid/transpose parallel
+      - name: Generate matrix
+        run: |
+          mkdir -p tmp
+          python3 ./scripts/matrix_generator.py 10000 5000 ./tmp/test.matrix
+      - name: Measure
+        run: |
+          time ./consistent ./tmp/test.matrix ./tmp/result.matrix
+          time ./parallel ./tmp/test.matrix ./tmp/result.matrix
