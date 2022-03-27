@@ -9,8 +9,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Building
+      - name: Building consistent
         run: |
           ./scripts/build.sh
           cd build
-          make
+          make transpose
+          cd ..
+      - name: Building consistent
+        run: |
+          ./scripts/build.sh -p
+          cd build
+          make transpose
+          cd ..
