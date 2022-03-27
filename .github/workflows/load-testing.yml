@@ -45,14 +45,14 @@ jobs:
           cd build
           make transpose
           cd ..
-          cp ./buid/transpose consistent
+          cp ./build/transpose consistent
       - name: Build parallel
         run: |
           ./scripts/build.sh
           cd build
           make transpose
           cd ..
-          cp ./buid/transpose parallel
+          cp ./build/transpose parallel
       - name: Generate matrix
         run: |
           mkdir -p tmp
