@@ -48,7 +48,7 @@ jobs:
           cp ./build/transpose consistent
       - name: Build parallel
         run: |
-          ./scripts/build.sh
+          ./scripts/build.sh -p
           cd build
           make transpose
           cd ..
