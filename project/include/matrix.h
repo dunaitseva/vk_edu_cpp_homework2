@@ -36,7 +36,8 @@ enum supported_matrix_errors {
 };
 
 int matrix_set_val(matrix_t *matrix, double val, size_t row, size_t col);
-double matrix_get_val(const matrix_t *matrix, size_t row, size_t col, int *status);
+double matrix_get_val(const matrix_t *matrix, size_t row, size_t col,
+                      int *status);
 
 matrix_t *create_matrix(size_t rows, size_t cols, int *status);
 int delete_matrix(matrix_t *matrix);
