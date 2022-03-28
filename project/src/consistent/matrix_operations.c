@@ -1,7 +1,7 @@
 #include "include/matrix.h"
 #include "include/utils.h"
 
-matrix_t *transpose(matrix_t *matrix, int *status) {
+matrix_t *transpose(const matrix_t *matrix, int *status) {
   if (matrix == NULL) {
     set_status(status, EPTR);
     return NULL;

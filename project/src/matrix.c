@@ -21,7 +21,7 @@ int matrix_set_val(matrix_t *matrix, double val, size_t row, size_t col) {
   return OK;
 }
 
-double matrix_get_val(matrix_t *matrix, size_t row, size_t col, int *status) {
+double matrix_get_val(const matrix_t *matrix, size_t row, size_t col, int *status) {
   if (matrix == NULL) {
     set_status(status, EPTR);
     return DEFAULT_DOUBLE_RET_VAL;

@@ -7,7 +7,7 @@
 #include "include/utils.h"
 
 typedef struct {
-  matrix_t *src;
+  const matrix_t *src;
   matrix_t *dest;
   size_t start;
   size_t end;
@@ -20,7 +20,7 @@ static int prepare_resources(pthread_t **threads,
                              size_t threads_amount);
 static void free_resources(pthread_t *threads, transpose_routine_args_t *args);
 
-matrix_t *transpose(matrix_t *matrix, int *status) {
+matrix_t *transpose(const matrix_t *matrix, int *status) {
   if (matrix == NULL) {
     set_status(status, EPTR);
     return NULL;

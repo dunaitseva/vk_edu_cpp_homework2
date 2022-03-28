@@ -36,7 +36,7 @@ enum supported_matrix_errors {
 };
 
 int matrix_set_val(matrix_t *matrix, double val, size_t row, size_t col);
-double matrix_get_val(matrix_t *matrix, size_t row, size_t col, int *status);
+double matrix_get_val(const matrix_t *matrix, size_t row, size_t col, int *status);
 
 matrix_t *create_matrix(size_t rows, size_t cols, int *status);
 int delete_matrix(matrix_t *matrix);
@@ -44,6 +44,6 @@ int delete_matrix(matrix_t *matrix);
 matrix_t *read_matrix(FILE *input, int *status);
 int write_matrix(FILE *output, matrix_t *matrix);
 
-matrix_t *transpose(matrix_t *matrix, int *status);
+matrix_t *transpose(const matrix_t *matrix, int *status);
 
 #endif  // PROJECT_INCLUDE_MATRIX_H_
