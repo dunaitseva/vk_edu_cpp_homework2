@@ -42,7 +42,7 @@ matrix_t *create_matrix(size_t rows, size_t cols, int *status);
 int delete_matrix(matrix_t *matrix);
 
 matrix_t *read_matrix(FILE *input, int *status);
-int write_matrix(FILE *output, matrix_t *matrix);
+int write_matrix(FILE *output, const matrix_t *matrix);
 
 matrix_t *transpose(const matrix_t *matrix, int *status);
 

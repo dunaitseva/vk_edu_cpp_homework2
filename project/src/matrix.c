@@ -106,7 +106,7 @@ matrix_t *read_matrix(FILE *input, int *status) {
   return result_matrix;
 }
 
-int write_matrix(FILE *output, matrix_t *matrix) {
+int write_matrix(FILE *output, const matrix_t *matrix) {
   if (output == NULL) {
     return ESTREAM;
   }
