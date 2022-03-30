@@ -3,7 +3,7 @@
 #include <stdexcept>
 
 extern "C" {
-#include "include/matrix.h"
+#include "matrix.h"
 }
 
 #include "gtest/gtest.h"
@@ -13,17 +13,17 @@ class MatrixSetGet : public ::testing::Test {
   static constexpr size_t MATRIX_ROWS = 5;
   static constexpr size_t MATRIX_COLS = 10;
 
-  matrix_t *matrix1;
+  matrix_t *matrix;
 
   void SetUp() {
-    matrix1 = create_matrix(MATRIX_ROWS, MATRIX_COLS, nullptr);
+    matrix = create_matrix(MATRIX_ROWS, MATRIX_COLS, nullptr);
 
-    if (matrix1 == nullptr) {
+    if (matrix == nullptr) {
       throw std::runtime_error("One of pointers is null");
     }
   }
 
-  void TearDown() { delete_matrix(matrix1); }
+  void TearDown() { delete_matrix(matrix); }
 };
 
 class MatrixReadWrite : public ::testing::Test {
@@ -122,9 +122,9 @@ TEST(DeleteMatrix, InvalidMatrixPointer) {
 }
 
 TEST_F(MatrixSetGet, ValidValuesGet) {
-  matrix1->data[41] = 3.0;
+  matrix->data[41] = 3.0;
   int status;
-  double result = matrix_get_val(matrix1, 4, 1, &status);
+  double result = matrix_get_val(matrix, 4, 1, &status);
   EXPECT_EQ(status, OK);
   ASSERT_FLOAT_EQ(result, 3.0);
 }
@@ -137,22 +137,22 @@ TEST_F(MatrixSetGet, InvalidValuesGetPointer) {
 
 TEST_F(MatrixSetGet, InvalidValuesGetSizeLess) {
   int status;
-  matrix_get_val(matrix1, -1, 0, &status);
+  matrix_get_val(matrix, -1, 0, &status);
   ASSERT_EQ(status, ESIZE);
-  matrix_get_val(matrix1, 0, -1, &status);
+  matrix_get_val(matrix, 0, -1, &status);
   ASSERT_EQ(status, ESIZE);
 }
 
 TEST_F(MatrixSetGet, InvalidValuesGetSizeEqual) {
   int status;
-  matrix_get_val(matrix1, MATRIX_ROWS, 0, &status);
+  matrix_get_val(matrix, MATRIX_ROWS, 0, &status);
   ASSERT_EQ(status, ESIZE);
-  matrix_get_val(matrix1, 0, MATRIX_COLS, &status);
+  matrix_get_val(matrix, 0, MATRIX_COLS, &status);
   ASSERT_EQ(status, ESIZE);
 }
 
 TEST_F(MatrixSetGet, ValidValuesSet) {
-  int status = matrix_set_val(matrix1, 1.0, 0, 0);
+  int status = matrix_set_val(matrix, 1.0, 0, 0);
   ASSERT_EQ(status, OK);
 }
 
@@ -162,16 +162,16 @@ TEST_F(MatrixSetGet, InvalidValuesSetPointer) {
 }
 
 TEST_F(MatrixSetGet, InvalidValuesSetSizeLess) {
-  int status = matrix_set_val(matrix1, 1.0, -1, 0);
+  int status = matrix_set_val(matrix, 1.0, -1, 0);
   ASSERT_EQ(status, ESIZE);
-  status = matrix_set_val(matrix1, 1.0, 0, -1);
+  status = matrix_set_val(matrix, 1.0, 0, -1);
   ASSERT_EQ(status, ESIZE);
 }
 
 TEST_F(MatrixSetGet, InvalidValuesSetSizeEqual) {
-  int status = matrix_set_val(matrix1, 1.0, MATRIX_ROWS, 0);
+  int status = matrix_set_val(matrix, 1.0, MATRIX_ROWS, 0);
   ASSERT_EQ(status, ESIZE);
-  status = matrix_set_val(matrix1, 1.0, 0, MATRIX_COLS);
+  status = matrix_set_val(matrix, 1.0, 0, MATRIX_COLS);
   ASSERT_EQ(status, ESIZE);
 }
 

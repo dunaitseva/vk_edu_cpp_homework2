@@ -28,7 +28,7 @@ for dir in ${DIRS[*]}; do
   for file in $(find -P $dir -type f); do
     echo "${INFO_TTY_COLOR}PROCESSING $file${TTY_COLOR_RESET}"
 
-    cpplint --filter=-legal/copyright,-readability/casting $file
+    cpplint --filter=-legal/copyright,-readability/casting,-build/include_subdir $file
     check-ret-code $file "cpplint" ret_code
     cppcheck --enable=$CPPCHECK_CHECKS --error-exitcode=1 -I project/include --suppress=missingIncludeSystem $file
     check-ret-code $file "cppcheck" ret_code
@@ -39,7 +39,7 @@ done
 for file in $(find -P project -type f); do
   echo "${INFO_TTY_COLOR}PROCESSING $file${TTY_COLOR_RESET}"
 
-  clang-tidy $file -- -Iproject
+  clang-tidy --extra-arg=-std=c99 -checks=-clang-analyzer-core.NullDereference $file -- -Iproject/include
   check-ret-code $file "clang-tidy"
 done
 

@@ -3,8 +3,8 @@
 #include <sys/sysinfo.h>
 #include <unistd.h>
 
-#include "include/matrix.h"
-#include "include/utils.h"
+#include "matrix.h"
+#include "utils.h"
 
 typedef struct {
   const matrix_t *src;
@@ -15,9 +15,9 @@ typedef struct {
 
 static size_t determine_threads_amount();
 static void *transpose_routine(void *args_struct);
-static int prepare_resources(pthread_t **threads,
-                             transpose_routine_args_t **args,
-                             size_t threads_amount);
+static int prepare_routine_resources(pthread_t **threads,
+                                     transpose_routine_args_t **args,
+                                     size_t threads_amount);
 static void free_resources(pthread_t *threads, transpose_routine_args_t *args);
 
 matrix_t *transpose(const matrix_t *matrix, int *status) {
@@ -36,7 +36,7 @@ matrix_t *transpose(const matrix_t *matrix, int *status) {
   size_t segment_size = matrix->rows / thread_amount + 1;
   pthread_t *threads = NULL;
   transpose_routine_args_t *tmp_args = NULL;
-  prepare_resources(&threads, &tmp_args, thread_amount);
+  prepare_routine_resources(&threads, &tmp_args, thread_amount);
 
   for (size_t i = 0; i < thread_amount; ++i) {
     tmp_args[i].src = matrix;
@@ -77,14 +77,11 @@ static void *transpose_routine(void *args_struct) {
   return args_struct;
 }
 
-static size_t determine_threads_amount() {
-  return get_nprocs();
-  //  return 3;
-}
+static size_t determine_threads_amount() { return get_nprocs(); }
 
-static int prepare_resources(pthread_t **threads,
-                             transpose_routine_args_t **args,
-                             size_t threads_amount) {
+static int prepare_routine_resources(pthread_t **threads,
+                                     transpose_routine_args_t **args,
+                                     size_t threads_amount) {
   *threads = (pthread_t *)calloc(threads_amount, sizeof(pthread_t));
   if (*threads == NULL) {
     return EALLOC;

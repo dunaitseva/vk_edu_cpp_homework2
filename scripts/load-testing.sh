@@ -49,7 +49,6 @@ echo "${INFO_TTY_COLOR}Check difference ${BIN_OUT} and ${REF_OUT}.${TTY_COLOR_RE
 diff ${REF_OUT} ${BIN_OUT}
 check-ret-code "Check difference"
 
-
 echo "${INFO_TTY_COLOR}Delete temple files ${INPUT}, ${BIN_OUT}, ${REF_OUT}.${TTY_COLOR_RESET}"
 rm ${INPUT}
 rm ${BIN_OUT}

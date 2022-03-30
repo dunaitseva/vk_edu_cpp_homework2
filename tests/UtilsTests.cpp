@@ -1,7 +1,7 @@
 #include <cstdio>
 
 extern "C" {
-#include "include/utils.h"
+#include "utils.h"
 }
 
 #include "gtest/gtest.h"

@@ -1,9 +1,9 @@
-#include "include/matrix.h"
+#include "matrix.h"
 
 #include <stdlib.h>
 #include <string.h>
 
-#include "include/utils.h"
+#include "utils.h"
 
 static int read_size(FILE *input, size_t *rows, size_t *cols);
 static int read_float(FILE *input, double *val);

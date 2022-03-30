@@ -1,5 +1,5 @@
-#include "include/matrix.h"
-#include "include/utils.h"
+#include "matrix.h"
+#include "utils.h"
 
 matrix_t *transpose(const matrix_t *matrix, int *status) {
   if (matrix == NULL) {

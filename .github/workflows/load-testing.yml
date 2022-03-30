@@ -21,7 +21,7 @@ jobs:
           ./scripts/load-testing.sh 100 100
           ./scripts/load-testing.sh 1000 2000
           ./scripts/load-testing.sh 10000 5000
-      - name: Run tests set with consistent implementation
+      - name: Run tests set with parallel implementation
         run: |
           ./scripts/build.sh -p
           cd build
