@@ -1,0 +1,63 @@
+name: Load testing
+on: [ push ]
+defaults:
+  run:
+    shell: bash
+jobs:
+  Reference-tests:
+    name: Comparison of the implementation with the reference
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install numpy
+        run: pip install numpy
+      - name: Run tests set with consistent implementation
+        run: |
+          ./scripts/build.sh
+          cd build
+          make transpose
+          cd ..
+          ./scripts/load-testing.sh 10 5
+          ./scripts/load-testing.sh 100 100
+          ./scripts/load-testing.sh 1000 2000
+          ./scripts/load-testing.sh 10000 5000
+      - name: Run tests set with parallel implementation
+        run: |
+          ./scripts/build.sh -p
+          cd build
+          make transpose
+          cd ..
+          ./scripts/load-testing.sh 10 5
+          ./scripts/load-testing.sh 100 100
+          ./scripts/load-testing.sh 1000 2000
+          ./scripts/load-testing.sh 10000 5000
+
+  Time-measuring:
+    name: Comparison time of working consistent and parallel implementations
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install numpy
+        run: pip install numpy
+      - name: Build consistent
+        run: |
+          ./scripts/build.sh
+          cd build
+          make transpose
+          cd ..
+          cp ./build/transpose consistent
+      - name: Build parallel
+        run: |
+          ./scripts/build.sh -p
+          cd build
+          make transpose
+          cd ..
+          cp ./build/transpose parallel
+      - name: Generate matrix
+        run: |
+          mkdir -p tmp
+          python3 ./scripts/matrix_generator.py 10000 5000 ./tmp/test.matrix
+      - name: Measure
+        run: |
+          time ./consistent ./tmp/test.matrix ./tmp/result.matrix
+          time ./parallel ./tmp/test.matrix ./tmp/result.matrix

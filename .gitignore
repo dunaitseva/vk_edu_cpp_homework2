@@ -30,3 +30,13 @@
 *.exe
 *.out
 *.app
+
+# IDE specific files and directories
+.idea/*
+cmake-build-debug/*
+
+# Build files and other temple directories and files
+build/*
+tmp/*
+infer-out/*
+*.xml

@@ -1,0 +1,23 @@
+name: Build pipline
+on: [ push ]
+defaults:
+  run:
+    shell: bash
+jobs:
+  Building:
+    name: Build HW solution
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Building consistent
+        run: |
+          ./scripts/build.sh
+          cd build
+          make transpose
+          cd ..
+      - name: Building consistent
+        run: |
+          ./scripts/build.sh -p
+          cd build
+          make transpose
+          cd ..

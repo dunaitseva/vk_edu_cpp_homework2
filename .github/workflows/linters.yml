@@ -1,0 +1,26 @@
+name: Linters piplene
+on: [ push ]
+defaults:
+  run:
+    shell: bash
+jobs:
+  Formating:
+    name: Check formating compilance with requirements
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Run format check script
+        run: ./scripts/format-check.sh
+
+  Linters:
+    name: Linters check code requrements
+    runs-on: ubuntu-latest
+    needs: Formating
+    steps:
+      - uses: actions/checkout@v2
+      - name: Run format check script
+        run: |
+          sudo apt install cppcheck
+          pip install cpplint
+          sudo apt install -y clang-tidy
+          ./scripts/linters-check.sh

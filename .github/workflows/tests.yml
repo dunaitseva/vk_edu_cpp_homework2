@@ -1,0 +1,51 @@
+name: Testing piplene
+on: [ push ]
+defaults:
+  run:
+    shell: bash
+jobs:
+  Consistent:
+    name: Consistent library tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build tests and load valgrind
+        run: |
+          sudo apt update
+          sudo apt install valgrind
+          ./scripts/build.sh -t
+          cd build
+          make
+      - name: Run matrix tests set
+        run: |
+          valgrind --leak-check=full ./build/MatrixTest
+          ./build/MatrixTestAddress
+          ./build/MatrixTestThread
+          ./build/MatrixTestUndefined
+
+  Parallel:
+    name: Parallel library tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build tests and load valgrind
+        run: |
+          sudo apt update
+          sudo apt install valgrind
+          ./scripts/build.sh -tp
+          cd build
+          make
+      - name: Run matrix tests set
+        run: |
+          valgrind --leak-check=full ./build/MatrixTest
+          ./build/MatrixTestAddress
+          ./build/MatrixTestThread
+          ./build/MatrixTestUndefined
+      - name: Generate coverage report
+        run: |
+          ./scripts/coverage-measure.sh
+      - name: Getting code coverage data
+        uses: codecov/codecov-action@v2
+        with:
+          token: 17098fdc-1aaf-4fce-a884-ac03d2c187de
+          files: coverage.xml
